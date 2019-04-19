@@ -67,11 +67,24 @@ class Interpreter {
         } catch (error) {
             throw error;
         }
-       
-      
-
-       
-
+    }
+    async executeSUBI(dest, arg1, arg2) {
+        try {
+            Number.parseInt (arg2)
+        } catch (error) {
+            throw 'not a integer'+arg2;
+        }
+        try {
+            var R1 = this.getRegister(arg1);
+            var destCell = this.getRegister(dest);
+            await  this.cpu.moveTo(R1.cell.x, R1.cell.y);
+            await  this.cpu.moveTo(destCell.cell.x, destCell.cell.y);
+            
+            destCell.cell.setContent(R1.value - Number.parseInt (arg2));
+            
+        } catch (error) {
+            throw error;
+        }
     }
     /**
      *
@@ -89,11 +102,15 @@ class Interpreter {
         await  this.cpu.moveTo(R2.cell.x, R2.cell.y);
         await  this.cpu.moveTo(destcell.cell.x, destcell.cell.y);
         destcell.cell.setContent(R1.value + R2.value);
-
-
-
-
-
+    }
+    async  executeSUB(dest, arg1, arg2) {
+        var R1 = this.getRegister(arg1);
+        var R2 = this.getRegister(arg2);
+        var destcell = this.getRegister(dest);
+        await  this.cpu.moveTo(R1.cell.x, R1.cell.y);
+        await  this.cpu.moveTo(R2.cell.x, R2.cell.y);
+        await  this.cpu.moveTo(destcell.cell.x, destcell.cell.y);
+        destcell.cell.setContent(R1.value - R2.value);
     }
 
 
@@ -118,6 +135,10 @@ class Interpreter {
                         break;
                     case "":
                         break;
+                    case "subi":
+                        await this.executeSUBI(splited[1],splited[2],splited[3]);
+                    case "sub":
+                        await this.executeSUB(splited[1],splited[2],splited[3]);
                     default:
                         alert('instruction not support at line' + (i + 1));
                         break;
