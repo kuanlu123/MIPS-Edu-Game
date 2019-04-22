@@ -133,12 +133,13 @@ class Interpreter {
                     case "add":
                         await this.executeADD(splited[1], splited[2], splited[3]);
                         break;
-                    case "":
-                        break;
                     case "subi":
                         await this.executeSUBI(splited[1],splited[2],splited[3]);
+                        break;
                     case "sub":
                         await this.executeSUB(splited[1],splited[2],splited[3]);
+                    case "":
+                        break;
                     default:
                         alert('instruction not support at line' + (i + 1));
                         break;
